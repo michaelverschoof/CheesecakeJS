@@ -1,0 +1,19 @@
+{
+  "name": "cheesecakejs",
+  "version": "0.0.1",
+  "description": "A vanilla JavaScript library for commonly used functionalities",
+  "main": "cheesecake.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelverschoof/CheesecakeJS.git"
+  },
+  "author": "Michael Verschoof <info@michaelv.nl>",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/michaelverschoof/CheesecakeJS/issues"
+  },
+  "homepage": "https://github.com/michaelverschoof/CheesecakeJS#readme"
+}
