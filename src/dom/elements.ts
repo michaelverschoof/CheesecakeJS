@@ -1,61 +1,81 @@
-import { Classes } from "../styles/classes";
+import { Parameters } from "../functions/parameters";
+
+export const BODY = document.body;
 
 export namespace Elements {
 
-    export function create (tag: string, classes ?: string[]): HTMLElement {
-        let element = document.createElement(tag);
-        Classes.add(classes, element);
-        return element;
+    export function create (tag : string) : HTMLElement {
+        return document.createElement(tag);
     }
 
-    export function empty (element: HTMLElement): HTMLElement {
+    export function empty (element : HTMLElement = BODY) : HTMLElement {
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
         return element;
     }
 
-    export function exists (selector: string, element ?: HTMLElement): boolean {
-        return selectElement(selector, element) !== null
+    export function exists (selector : string, element : HTMLElement = BODY) : boolean {
+        return findElement(selector, element) !== null
     }
 
-    export function find (selector: string, element: HTMLElement, all = false): HTMLElement | HTMLElement[] {
+    export function find (selector : string, element : HTMLElement = BODY, all : boolean = false) : HTMLElement | HTMLElement[] {
         return false === all
-            ? selectElement(selector, element)
-            : selectElements(selector, element);
+            ? findElement(selector, element)
+            : findElements(selector, element);
     }
 
-    export function children (selector: string, element: HTMLElement): HTMLElement[] {
-        return selectElements(selector, element);
+    export function all (selector : string, element : HTMLElement = BODY) : HTMLElement[] {
+        return findElements(selector, element);
     }
 
-    export function siblings (selector: string, element: HTMLElement): HTMLElement[] | null {
-        return selectElements(selector, element.parentElement).filter(el => el !== element)
+    export function first (selector : string, element : HTMLElement = BODY) : HTMLElement {
+        return findElement(selector, element);
     }
 
+    export function last (selector : string, element : HTMLElement = BODY) : HTMLElement {
+        const elements = findElements(selector, element);
+        return elements[elements.length - 1] || null;
+    }
 
-// --------------------------------------------------
-// Private functions
-// --------------------------------------------------
-    function selectElement (selector: string, element = document.body): HTMLElement | null {
+    export function children (selector : string, element : HTMLElement = BODY) : HTMLElement[] {
+        return findElements(selector, element);
+    }
+
+    export function siblings (selector : string, element : HTMLElement) : HTMLElement[] {
+        return findElements(selector, element.parentElement).filter(el => el !== element)
+    }
+
+    export function append (children : HTMLElement | HTMLElement[], parent : HTMLElement) : void {
+        for (let child of Parameters.elements(children)) {
+            parent.appendChild(child);
+        }
+    }
+
+    // --------------------------------------------------
+    // Private functions
+    // --------------------------------------------------
+
+    function findElement (selector : string, element : HTMLElement) : HTMLElement {
         const selectors = getSelectors(selector);
         return element.querySelector<HTMLElement>(selectors);
     }
 
-    function selectElements (selector: string, element = document.body): HTMLElement[] | null {
+    function findElements (selector : string, element : HTMLElement) : HTMLElement[] {
         const selectors = getSelectors(selector);
-        return Array.from(element.querySelectorAll<HTMLElement>(selectors));
+        return Array.from(element.querySelectorAll<HTMLElement>(selectors)) || [];
     }
 
-    function getSelectors (selectors: string) {
+    function getSelectors (selectors : string) : string {
         return selectors
-            .split(',')
-            .map(selector =>
-                selector
-                    .trim()
-                    .split(' ')
-                    .map(part => part.indexOf('data-') === 0 ? '[' + part + ']' : part)
-                    .join(' '))
-            .join(',');
+        .split(',')
+        .map(selector =>
+            selector
+            .trim()
+            .split(' ')
+            .map(part => part.indexOf('data-') === 0 ? '[' + part + ']' : part)
+            .join(' '))
+        .join(',');
     }
+
 }
