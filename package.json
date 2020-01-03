@@ -4,7 +4,8 @@
   "description": "A vanilla JavaScript library for commonly used functionalities",
   "main": "cheesecake.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/michaelverschoof/CheesecakeJS/issues"
   },
-  "homepage": "https://github.com/michaelverschoof/CheesecakeJS#readme"
+  "homepage": "https://github.com/michaelverschoof/CheesecakeJS#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.4"
+  }
 }
