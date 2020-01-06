@@ -23,12 +23,6 @@ export namespace Classes {
         }
     }
 
-    export function toggle (token : string, elements : HTMLElement | HTMLElement[], condition : boolean = true) {
-        for (let element of Parameters.elements(elements)) {
-            element.classList.toggle(token, condition)
-        }
-    }
-
     export function has (classes : string | string[], element : HTMLElement) {
         return Parameters.strings(classes).every(c => element.classList.contains(c))
     }

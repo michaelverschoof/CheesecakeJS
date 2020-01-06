@@ -141,8 +141,6 @@ test('Replace multiple classes with non-existent class', () => {
     expect(element.classList.contains('other')).toBe(true);
 });
 
-// TODO: ADD TOGGLE TESTS
-
 function createElement () : HTMLElement {
     return Elements.create('div');
 }
