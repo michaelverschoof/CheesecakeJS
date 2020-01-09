@@ -1,27 +1,27 @@
-import { Attributes } from '../../src/dom/attributes'
+import { Attributes } from '../../src/dom/attributes';
 import { Elements } from '../../src/dom/elements';
 
 test('First attribute found', () => {
     const container = createElements();
-    const result = Attributes.first('test', container);
+    const result = Attributes.first('[test]', container);
     expect(result).toBe('first');
 });
 
 test('First attribute not found', () => {
     const container = createElements();
-    const result = Attributes.first('other', container);
+    const result = Attributes.first('[other]', container);
     expect(result).toBeNull();
 });
 
 test('Last attribute found', () => {
     const container = createElements();
-    const result = Attributes.last('test', container);
+    const result = Attributes.last('[test]', container);
     expect(result).toBe('last');
 });
 
 test('Last attribute not found', () => {
     const container = createElements();
-    const result = Attributes.last('other', container);
+    const result = Attributes.last('[other]', container);
     expect(result).toBeNull();
 });
 
@@ -77,18 +77,47 @@ test('Multiple attributes not found', () => {
     expect(result.length).toBe(0);
 });
 
-function createElements () : HTMLElement {
-    const first = Elements.create('div');
-    first.setAttribute('test', 'first');
-    const middle = Elements.create('div');
-    middle.setAttribute('test', 'middle');
-    const last = Elements.create('div');
-    last.setAttribute('test', 'last');
+test('Get attribute from single element', () => {
+    const container = createElements();
+    const element = Elements.first('[test]', container);
+    const result = Attributes.get('test', element);
+    expect(result).toBe('first');
+});
 
-    let container = Elements.create('div');
-    Elements.append(first, container);
-    Elements.append(middle, container);
-    Elements.append(last, container);
+test('Get attribute from multiple elements', () => {
+    const container = createElements();
+    const elements = Elements.all('div', container);
+    const result = Attributes.get('test', elements);
+    expect(result.length).toBe(3);
+    expect(result.includes('middle')).toBe(true);
+});
+
+test('Attributes not found when no elements are provided', () => {
+    const all = Attributes.all('other');
+    const first = Attributes.first('other');
+    const last = Attributes.last('other');
+    const single = Attributes.find('other');
+    const exists = Attributes.exists('other');
+
+    expect(all.length).toBe(0);
+    expect(first).toBeNull();
+    expect(last).toBeNull();
+    expect(single).toBeNull();
+    expect(exists).toBe(false);
+});
+
+function createElements () : HTMLElement {
+    let first = Elements.create('div');
+    first.setAttribute('test', 'first');
+    let middle = Elements.create('div');
+    middle.setAttribute('test', 'middle');
+    let last = Elements.create('div');
+    last.setAttribute('test', 'last');
+    let more = Elements.create('div');
+    more.setAttribute('more', 'something');
+
+    const container = Elements.create('div');
+    Elements.append([first, middle, last, more], container);
 
     return container;
 }

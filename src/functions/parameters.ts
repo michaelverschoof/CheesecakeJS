@@ -15,7 +15,7 @@ export namespace Parameters {
         }
 
         return strings.split(',').reduce(
-            (result: string[], item: string) => {
+            (result : string[], item : string) => {
                 if ('' !== item.trim()) {
                     result.push(item.trim())
                 }
@@ -29,7 +29,7 @@ export namespace Parameters {
     }
 
     export function endsWith (needle : string, haystack : string) : boolean {
-        return haystack.indexOf(needle) === (haystack.length - 1);
+        return haystack.indexOf(needle) === (haystack.length - needle.length);
     }
 
 }

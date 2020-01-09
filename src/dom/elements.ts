@@ -1,4 +1,4 @@
-import { Parameters } from "../functions/parameters";
+import { Parameters } from '../functions/parameters';
 
 export const BODY = document.body;
 
@@ -8,7 +8,7 @@ export namespace Elements {
         return document.createElement(tag);
     }
 
-    export function empty (element : HTMLElement = BODY) : HTMLElement {
+    export function empty (element : HTMLElement) : HTMLElement {
         while (element.firstChild) {
             element.removeChild(element.firstChild);
         }
@@ -38,12 +38,12 @@ export namespace Elements {
         return elements[elements.length - 1] || null;
     }
 
-    export function children (selector : string, element : HTMLElement = BODY) : HTMLElement[] {
-        return findElements(selector, element);
+    export function children (element : HTMLElement) : HTMLElement[] {
+        return findChildElements(element);
     }
 
-    export function siblings (selector : string, element : HTMLElement) : HTMLElement[] {
-        return findElements(selector, element.parentElement).filter(el => el !== element)
+    export function siblings (element : HTMLElement) : HTMLElement[] {
+        return findChildElements(element.parentElement).filter(sibling => sibling !== element)
     }
 
     export function append (children : HTMLElement | HTMLElement[], parent : HTMLElement) : void {
@@ -58,12 +58,29 @@ export namespace Elements {
 
     function findElement (selector : string, element : HTMLElement) : HTMLElement {
         const selectors = getSelectors(selector);
-        return element.querySelector<HTMLElement>(selectors);
+        const found = element.querySelector(selectors);
+        return found && found instanceof HTMLElement ? found : null
     }
 
     function findElements (selector : string, element : HTMLElement) : HTMLElement[] {
         const selectors = getSelectors(selector);
-        return Array.from(element.querySelectorAll<HTMLElement>(selectors)) || [];
+        const found = element.querySelectorAll(selectors);
+        return filterElements(found);
+    }
+
+    function findChildElements (element : HTMLElement) : HTMLElement[] {
+        return filterElements(element.children);
+    }
+
+    function filterElements (elements : NodeListOf<Element> | HTMLCollection) : HTMLElement[] {
+        return Array.from(elements).reduce(
+            (result : HTMLElement[], element : Element) => {
+                if (element instanceof HTMLElement) {
+                    result.push(element);
+                }
+                return result;
+            }, []
+        );
     }
 
     function getSelectors (selectors : string) : string {

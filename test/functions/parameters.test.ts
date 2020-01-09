@@ -1,4 +1,4 @@
-import { Parameters } from '../../src/functions/parameters'
+import { Parameters } from '../../src/functions/parameters';
 import { Elements } from '../../src/dom/elements';
 
 test('Single element results in an array with that element in it', () => {
@@ -33,4 +33,32 @@ test('Multiple parameter array results in an array with those elements in it', (
     const result = Parameters.strings(values);
     expect(result.length).toBe(4);
     expect(result[2]).toBe('multiple');
+});
+
+test('Starts with string', () => {
+    const result = Parameters.startsWith('start', 'start of string');
+    expect(result).toBe(true);
+});
+
+test('Does not start with string', () => {
+    const result = Parameters.startsWith('string', 'start of string');
+    expect(result).toBe(false);
+});
+
+test('Ends with string found', () => {
+    const result = Parameters.endsWith('string', 'start of string');
+    expect(result).toBe(true);
+});
+
+test('Ends with string not found', () => {
+    const result = Parameters.endsWith('start', 'start of string');
+    expect(result).toBe(false);
+});
+
+test('Strings not found', () => {
+    let result = Parameters.startsWith('something', 'start of string');
+    expect(result).toBe(false);
+
+    result = Parameters.endsWith('something', 'start of string');
+    expect(result).toBe(false);
 });
